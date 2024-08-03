@@ -505,7 +505,7 @@ class _TambahSponsorWidgetState extends State<TambahSponsorWidget> {
                     width: double.infinity,
                     height: 40.0,
                     decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).success,
+                      color: const Color(0xFF1B3E3B),
                       borderRadius: BorderRadius.circular(12.0),
                     ),
                     child: Align(

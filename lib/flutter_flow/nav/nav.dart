@@ -9,7 +9,6 @@ import '/auth/custom_auth/custom_auth_user_provider.dart';
 
 import '/index.dart';
 import '/main.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
 export 'package:go_router/go_router.dart';
@@ -75,13 +74,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? const NavBarPage() : const LoginWidget(),
+          appStateNotifier.loggedIn ? const NavBarPage() : const SplachOnlyLogoWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? const NavBarPage() : const LoginWidget(),
+              appStateNotifier.loggedIn ? const NavBarPage() : const SplachOnlyLogoWidget(),
         ),
         FFRoute(
           name: 'splach_Only_Logo',
@@ -106,24 +105,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               : const ProfilFiksWidget(),
         ),
         FFRoute(
-          name: 'profil_depricated',
-          path: '/profil2',
-          builder: (context, params) => const NavBarPage(
-            initialPage: '',
-            page: ProfilDepricatedWidget(),
-          ),
-        ),
-        FFRoute(
-          name: 'tambahUMKM',
-          path: '/tambahUMKM',
-          builder: (context, params) => const TambahUMKMWidget(),
-        ),
-        FFRoute(
-          name: 'editMitraIndustri',
-          path: '/editMitraIndustri',
-          builder: (context, params) => const EditMitraIndustriWidget(),
-        ),
-        FFRoute(
           name: 'home',
           path: '/home',
           builder: (context, params) =>
@@ -146,11 +127,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'registrasiEntrepreneur',
           path: '/registrasi_entrepreneur',
           builder: (context, params) => const RegistrasiEntrepreneurWidget(),
-        ),
-        FFRoute(
-          name: 'registrasiTambahMitra',
-          path: '/registrasi_mitra',
-          builder: (context, params) => const RegistrasiTambahMitraWidget(),
         ),
         FFRoute(
           name: 'sponsor',
@@ -190,19 +166,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => const UbahNomorWidget(),
         ),
         FFRoute(
-          name: 'ubahDataUMKM',
-          path: '/ubahDataUMKM',
-          builder: (context, params) => const UbahDataUMKMWidget(),
+          name: 'ubahDataOrganizer',
+          path: '/ubahDataOrganizer',
+          builder: (context, params) => const UbahDataOrganizerWidget(),
         ),
         FFRoute(
-          name: 'password1',
-          path: '/password1',
-          builder: (context, params) => const Password1Widget(),
-        ),
-        FFRoute(
-          name: 'password2',
-          path: '/password2',
-          builder: (context, params) => const Password2Widget(),
+          name: 'changePassword',
+          path: '/changePassword',
+          builder: (context, params) => const ChangePasswordWidget(),
         ),
         FFRoute(
           name: 'eventPopuler',
@@ -213,11 +184,20 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           ),
         ),
         FFRoute(
-          name: 'eventFestival',
-          path: '/eventFestival',
-          builder: (context, params) => const NavBarPage(
+          name: 'eventByCategory',
+          path: '/eventByCategory',
+          builder: (context, params) => NavBarPage(
             initialPage: '',
-            page: EventFestivalWidget(),
+            page: EventByCategoryWidget(
+              categoryId: params.getParam(
+                'categoryId',
+                ParamType.int,
+              ),
+              categoryName: params.getParam(
+                'categoryName',
+                ParamType.String,
+              ),
+            ),
           ),
         ),
         FFRoute(
@@ -273,10 +253,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'listTransaksi',
           path: '/listTransaksi',
-          builder: (context, params) => const NavBarPage(
-            initialPage: '',
-            page: ListTransaksiWidget(),
-          ),
+          builder: (context, params) => const ListTransaksiWidget(),
         ),
         FFRoute(
           name: 'accordion',
@@ -301,7 +278,12 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'tambahEvent4',
           path: '/tambahEvent4',
-          builder: (context, params) => const TambahEvent4Widget(),
+          builder: (context, params) => TambahEvent4Widget(
+            eventCreatedId: params.getParam(
+              'eventCreatedId',
+              ParamType.int,
+            ),
+          ),
         ),
         FFRoute(
           name: 'tambahEvent5',
@@ -319,19 +301,139 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => const RegistrasiTambahOrganizerWidget(),
         ),
         FFRoute(
+          name: 'homeOrganizer',
+          path: '/homeOrganizer',
+          builder: (context, params) => const NavBarPage(
+            initialPage: '',
+            page: HomeOrganizerWidget(),
+          ),
+        ),
+        FFRoute(
+          name: 'penerima',
+          path: '/penerima',
+          builder: (context, params) => const PenerimaWidget(),
+        ),
+        FFRoute(
+          name: 'nominal',
+          path: '/nominal',
+          builder: (context, params) => const NominalWidget(),
+        ),
+        FFRoute(
+          name: 'pencairanDana',
+          path: '/pencairanDana',
+          builder: (context, params) => const PencairanDanaWidget(),
+        ),
+        FFRoute(
+          name: 'pencairanDanaGagal',
+          path: '/pencairanDanaGagal',
+          builder: (context, params) => const PencairanDanaGagalWidget(),
+        ),
+        FFRoute(
+          name: 'ubahEvent1',
+          path: '/ubahEvent1',
+          builder: (context, params) => UbahEvent1Widget(
+            eventId2: params.getParam(
+              'eventId2',
+              ParamType.int,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: 'ubahKontraprestasi',
+          path: '/ubahKontraprestasi',
+          builder: (context, params) => UbahKontraprestasiWidget(
+            eventId: params.getParam(
+              'eventId',
+              ParamType.int,
+            ),
+            kontraprestasiId: params.getParam(
+              'kontraprestasiId',
+              ParamType.int,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: 'tambahKontraprestasi',
+          path: '/tambahKontraprestasi',
+          builder: (context, params) => TambahKontraprestasiWidget(
+            eventId: params.getParam(
+              'eventId',
+              ParamType.int,
+            ),
+          ),
+        ),
+        FFRoute(
           name: 'tambahEventtt',
           path: '/tambahEventtt',
           builder: (context, params) => const TambahEventttWidget(),
         ),
         FFRoute(
-          name: 'AuthenticationCopy2Copy',
-          path: '/authenticationCopy2Copy',
-          builder: (context, params) => const AuthenticationCopy2CopyWidget(),
+          name: 'Expandable',
+          path: '/expandable',
+          builder: (context, params) => const ExpandableWidget(),
         ),
         FFRoute(
-          name: 'AuthenticationCopy3',
-          path: '/Registrasi',
-          builder: (context, params) => const AuthenticationCopy3Widget(),
+          name: 'registrasiTambahOrganisasi',
+          path: '/registrasi_organisasi',
+          builder: (context, params) => RegistrasiTambahOrganisasiWidget(
+            userRegistrationId: params.getParam(
+              'userRegistrationId',
+              ParamType.int,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: 'registrasiTambahMitra',
+          path: '/registrasi_mitra',
+          builder: (context, params) => RegistrasiTambahMitraWidget(
+            userRegistrationId: params.getParam(
+              'userRegistrationId',
+              ParamType.int,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: 'pesanBelumLogin',
+          path: '/pesanBelumLogin',
+          builder: (context, params) => const NavBarPage(
+            initialPage: '',
+            page: PesanBelumLoginWidget(),
+          ),
+        ),
+        FFRoute(
+          name: 'akunBelumLogin',
+          path: '/akunBelumLogin',
+          builder: (context, params) => const NavBarPage(
+            initialPage: '',
+            page: AkunBelumLoginWidget(),
+          ),
+        ),
+        FFRoute(
+          name: 'events',
+          path: '/events',
+          builder: (context, params) => params.isEmpty
+              ? const NavBarPage(initialPage: 'events')
+              : const EventsWidget(),
+        ),
+        FFRoute(
+          name: 'detailEventPOVOrganizer',
+          path: '/detailEventForOrganizer',
+          builder: (context, params) => const DetailEventPOVOrganizerWidget(),
+        ),
+        FFRoute(
+          name: 'listKontraprestasi',
+          path: '/listKontraprestasi',
+          builder: (context, params) => const ListKontraprestasiWidget(),
+        ),
+        FFRoute(
+          name: 'ubahDataMitra',
+          path: '/ubahDataMitra',
+          builder: (context, params) => const UbahDataMitraWidget(),
+        ),
+        FFRoute(
+          name: 'asdasd',
+          path: '/asdasd',
+          builder: (context, params) => const AsdasdWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
@@ -502,7 +604,7 @@ class FFRoute {
 
           if (requireAuth && !appStateNotifier.loggedIn) {
             appStateNotifier.setRedirectLocationIfUnset(state.uri.toString());
-            return '/login';
+            return '/splachOnlyLogo';
           }
           return null;
         },
@@ -516,15 +618,11 @@ class FFRoute {
                 )
               : builder(context, ffParams);
           final child = appStateNotifier.loading
-              ? Center(
-                  child: SizedBox(
-                    width: 50.0,
-                    height: 50.0,
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        FlutterFlowTheme.of(context).primary,
-                      ),
-                    ),
+              ? Container(
+                  color: Colors.transparent,
+                  child: Image.asset(
+                    'assets/images/log.png',
+                    fit: BoxFit.contain,
                   ),
                 )
               : page;

@@ -30,54 +30,63 @@ class ProfileManagementStruct extends BaseStruct {
   String? _fullName;
   String get fullName => _fullName ?? '';
   set fullName(String? val) => _fullName = val;
+
   bool hasFullName() => _fullName != null;
 
   // "photo_file" field.
   String? _photoFile;
   String get photoFile => _photoFile ?? '';
   set photoFile(String? val) => _photoFile = val;
+
   bool hasPhotoFile() => _photoFile != null;
 
   // "email" field.
   String? _email;
   String get email => _email ?? '';
   set email(String? val) => _email = val;
+
   bool hasEmail() => _email != null;
 
   // "phone" field.
   String? _phone;
   String get phone => _phone ?? '';
   set phone(String? val) => _phone = val;
+
   bool hasPhone() => _phone != null;
 
   // "name" field.
   String? _name;
   String get name => _name ?? '';
   set name(String? val) => _name = val;
+
   bool hasName() => _name != null;
 
   // "address" field.
   String? _address;
   String get address => _address ?? '';
   set address(String? val) => _address = val;
+
   bool hasAddress() => _address != null;
 
   // "province" field.
   String? _province;
   String get province => _province ?? '';
   set province(String? val) => _province = val;
+
   bool hasProvince() => _province != null;
 
   // "city" field.
   String? _city;
   String get city => _city ?? '';
   set city(String? val) => _city = val;
+
   bool hasCity() => _city != null;
 
   // "description" field.
   String? _description;
   String get description => _description ?? '';
   set description(String? val) => _description = val;
+
   bool hasDescription() => _description != null;
 
   static ProfileManagementStruct fromMap(Map<String, dynamic> data) =>

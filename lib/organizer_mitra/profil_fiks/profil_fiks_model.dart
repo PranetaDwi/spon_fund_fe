@@ -83,6 +83,8 @@ class ProfilFiksModel extends FlutterFlowModel<ProfilFiksWidget> {
   FocusNode? fullAddressFocusNode2;
   TextEditingController? fullAddressTextController2;
   String? Function(BuildContext, String?)? fullAddressTextController2Validator;
+  // Stores action output result for [Backend Call - API (Logout)] action in EditProfileButton widget.
+  ApiCallResponse? apiResultjcp;
 
   @override
   void initState(BuildContext context) {

@@ -42,10 +42,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   ThemeMode _themeMode = ThemeMode.system;
 
-  late Stream<FundationAuthUser> userStream;
-
   late AppStateNotifier _appStateNotifier;
   late GoRouter _router;
+
+  late Stream<FundationAuthUser> userStream;
 
   @override
   void initState() {
@@ -54,7 +54,9 @@ class _MyAppState extends State<MyApp> {
     _appStateNotifier = AppStateNotifier.instance;
     _router = createRouter(_appStateNotifier);
     userStream = fundationAuthUserStream()
-      ..listen((user) => _appStateNotifier.update(user));
+      ..listen((user) {
+        _appStateNotifier.update(user);
+      });
 
     Future.delayed(
       const Duration(milliseconds: 1000),
@@ -114,6 +116,7 @@ class _NavBarPageState extends State<NavBarPage> {
       'home': const HomeWidget(),
       'sponsor': const SponsorWidget(),
       'pesan': const PesanWidget(),
+      'events': const EventsWidget(),
       'profil-fiks': const ProfilFiksWidget(),
     };
     final currentIndex = tabs.keys.toList().indexOf(_currentPageName);
@@ -223,8 +226,32 @@ class _NavBarPageState extends State<NavBarPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
-                  Icons.person,
+                  Icons.festival,
                   color: currentIndex == 3
+                      ? FlutterFlowTheme.of(context).primaryText
+                      : const Color(0x8A000000),
+                  size: 30.0,
+                ),
+                Text(
+                  'Event',
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: currentIndex == 3
+                        ? FlutterFlowTheme.of(context).primaryText
+                        : const Color(0x8A000000),
+                    fontSize: 11.0,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          FloatingNavbarItem(
+            customWidget: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.person,
+                  color: currentIndex == 4
                       ? FlutterFlowTheme.of(context).primaryText
                       : const Color(0x8A000000),
                   size: 30.0,
@@ -233,7 +260,7 @@ class _NavBarPageState extends State<NavBarPage> {
                   'Akun',
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    color: currentIndex == 3
+                    color: currentIndex == 4
                         ? FlutterFlowTheme.of(context).primaryText
                         : const Color(0x8A000000),
                     fontSize: 11.0,

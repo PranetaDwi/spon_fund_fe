@@ -24,7 +24,16 @@ class _SplachOnlyLogoWidgetState extends State<SplachOnlyLogoWidget> {
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      context.pushNamed('splash_Introduction');
+      context.pushNamed(
+        'home',
+        extra: <String, dynamic>{
+          kTransitionInfoKey: const TransitionInfo(
+            hasTransition: true,
+            transitionType: PageTransitionType.rightToLeft,
+            duration: Duration(milliseconds: 200),
+          ),
+        },
+      );
     });
   }
 

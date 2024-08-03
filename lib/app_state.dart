@@ -41,6 +41,20 @@ class FFAppState extends ChangeNotifier {
         }
       }
     });
+    _safeInit(() {
+      if (prefs.containsKey('ff_createEventData')) {
+        try {
+          final serializedData = prefs.getString('ff_createEventData') ?? '{}';
+          _createEventData = CreateEventDataStruct.fromSerializableMap(
+              jsonDecode(serializedData));
+        } catch (e) {
+          print("Can't decode persisted data type. Error: $e.");
+        }
+      }
+    });
+    _safeInit(() {
+      _titleEvent = prefs.getString('ff_titleEvent') ?? _titleEvent;
+    });
   }
 
   void update(VoidCallback callback) {
@@ -81,6 +95,26 @@ class FFAppState extends ChangeNotifier {
   int get eventId => _eventId;
   set eventId(int value) {
     _eventId = value;
+  }
+
+  CreateEventDataStruct _createEventData =
+      CreateEventDataStruct.fromSerializableMap(jsonDecode('{}'));
+  CreateEventDataStruct get createEventData => _createEventData;
+  set createEventData(CreateEventDataStruct value) {
+    _createEventData = value;
+    prefs.setString('ff_createEventData', value.serialize());
+  }
+
+  void updateCreateEventDataStruct(Function(CreateEventDataStruct) updateFn) {
+    updateFn(_createEventData);
+    prefs.setString('ff_createEventData', _createEventData.serialize());
+  }
+
+  String _titleEvent = '';
+  String get titleEvent => _titleEvent;
+  set titleEvent(String value) {
+    _titleEvent = value;
+    prefs.setString('ff_titleEvent', value);
   }
 }
 

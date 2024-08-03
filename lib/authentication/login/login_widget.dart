@@ -121,6 +121,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                         SingleChildScrollView(
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(8.0),
@@ -136,7 +137,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                                 child: TextFormField(
                                   controller: _model.emailInputTextController,
                                   focusNode: _model.emailInputFocusNode,
-                                  autofocus: true,
+                                  autofocus: false,
+                                  textInputAction: TextInputAction.done,
                                   obscureText: false,
                                   decoration: InputDecoration(
                                     labelText: 'Email',
@@ -206,8 +208,9 @@ class _LoginWidgetState extends State<LoginWidget> {
                                   controller:
                                       _model.passwordInputTextController,
                                   focusNode: _model.passwordInputFocusNode,
-                                  autofocus: true,
-                                  obscureText: false,
+                                  autofocus: false,
+                                  textInputAction: TextInputAction.done,
+                                  obscureText: !_model.passwordInputVisibility,
                                   decoration: InputDecoration(
                                     labelText: 'Password',
                                     labelStyle: FlutterFlowTheme.of(context)
@@ -219,10 +222,17 @@ class _LoginWidgetState extends State<LoginWidget> {
                                         ),
                                     hintText: 'Masukkan Password',
                                     hintStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
+                                        .bodyMedium
                                         .override(
-                                          fontFamily: 'Poppins',
-                                          fontSize: 14.0,
+                                          fontFamily: 'Readex Pro',
+                                          letterSpacing: 0.0,
+                                        ),
+                                    errorStyle: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily: 'Readex Pro',
+                                          color: FlutterFlowTheme.of(context)
+                                              .error,
                                           letterSpacing: 0.0,
                                         ),
                                     enabledBorder: OutlineInputBorder(
@@ -256,6 +266,19 @@ class _LoginWidgetState extends State<LoginWidget> {
                                         width: 2.0,
                                       ),
                                       borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    suffixIcon: InkWell(
+                                      onTap: () => setState(
+                                        () => _model.passwordInputVisibility =
+                                            !_model.passwordInputVisibility,
+                                      ),
+                                      focusNode: FocusNode(skipTraversal: true),
+                                      child: Icon(
+                                        _model.passwordInputVisibility
+                                            ? Icons.visibility_outlined
+                                            : Icons.visibility_off_outlined,
+                                        size: 20.0,
+                                      ),
                                     ),
                                   ),
                                   style: FlutterFlowTheme.of(context)
@@ -336,27 +359,26 @@ class _LoginWidgetState extends State<LoginWidget> {
                                       password: _model
                                           .passwordInputTextController.text,
                                     );
+
                                     if ((_model.apiLogin?.succeeded ?? true)) {
-                                      setState(() {
-                                        FFAppState().updateUserDataStateStruct(
-                                          (e) => e
-                                            ..token = AuthenticationGroup
-                                                .loginCall
-                                                .token(
-                                              (_model.apiLogin?.jsonBody ?? ''),
-                                            )
-                                            ..userName = AuthenticationGroup
-                                                .loginCall
-                                                .username(
-                                              (_model.apiLogin?.jsonBody ?? ''),
-                                            )
-                                            ..role = AuthenticationGroup
-                                                .loginCall
-                                                .role(
-                                              (_model.apiLogin?.jsonBody ?? ''),
-                                            ),
-                                        );
-                                      });
+                                      FFAppState().updateUserDataStateStruct(
+                                        (e) => e
+                                          ..token = AuthenticationGroup
+                                              .loginCall
+                                              .token(
+                                            (_model.apiLogin?.jsonBody ?? ''),
+                                          )
+                                          ..userName = AuthenticationGroup
+                                              .loginCall
+                                              .username(
+                                            (_model.apiLogin?.jsonBody ?? ''),
+                                          )
+                                          ..role = AuthenticationGroup.loginCall
+                                              .role(
+                                            (_model.apiLogin?.jsonBody ?? ''),
+                                          ),
+                                      );
+                                      setState(() {});
                                       GoRouter.of(context).prepareAuthEvent();
                                       await authManager.signIn(
                                         authenticationToken:
@@ -366,8 +388,25 @@ class _LoginWidgetState extends State<LoginWidget> {
                                       context.pushNamedAuth(
                                           'home', context.mounted);
                                     } else {
-                                      context.pushNamedAuth(
-                                          'login', context.mounted);
+                                      await showDialog(
+                                        context: context,
+                                        builder: (alertDialogContext) {
+                                          return AlertDialog(
+                                            title: const Text('ERROR AUTH'),
+                                            content: Text(getJsonField(
+                                              (_model.apiLogin?.jsonBody ?? ''),
+                                              r'''$.message''',
+                                            ).toString()),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    alertDialogContext),
+                                                child: const Text('Ok'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
                                     }
 
                                     setState(() {});
@@ -380,7 +419,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                         24.0, 0.0, 24.0, 0.0),
                                     iconPadding: const EdgeInsetsDirectional.fromSTEB(
                                         0.0, 0.0, 0.0, 0.0),
-                                    color: FlutterFlowTheme.of(context).success,
+                                    color: const Color(0xFF1B3E3B),
                                     textStyle: FlutterFlowTheme.of(context)
                                         .titleSmall
                                         .override(
@@ -422,7 +461,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                             fontFamily: 'Poppins',
                                             color: FlutterFlowTheme.of(context)
                                                 .primaryText,
-                                            fontSize: 10.0,
+                                            fontSize: 12.0,
                                             letterSpacing: 0.0,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -445,7 +484,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .primary,
-                                              fontSize: 10.0,
+                                              fontSize: 12.0,
                                               letterSpacing: 0.0,
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -454,112 +493,145 @@ class _LoginWidgetState extends State<LoginWidget> {
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                        Column(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: double.infinity,
-                              height: 150.0,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context).alternate,
-                              ),
-                              child: Align(
-                                alignment: const AlignmentDirectional(-1.0, 0.0),
-                                child: Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      16.0, 0.0, 16.0, 0.0),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 0.0, 0.0, 8.0),
-                                        child: Text(
-                                          'Punya Event ?',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                fontFamily: 'Poppins',
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                              Column(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 60.0, 0.0, 0.0),
+                                    child: SafeArea(
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: 150.0,
+                                        decoration: BoxDecoration(
+                                          color: FlutterFlowTheme.of(context)
+                                              .alternate,
                                         ),
-                                      ),
-                                      Text(
-                                        'Daftar Sekarang dan Rasakan Keuntungan',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily: 'Poppins',
-                                              fontSize: 10.0,
-                                              letterSpacing: 0.0,
-                                            ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 0.0, 0.0, 10.0),
-                                        child: Text(
-                                          'Menjadi Bagian dari Kami',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                fontFamily: 'Poppins',
-                                                fontSize: 10.0,
-                                                letterSpacing: 0.0,
-                                              ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 10.0, 0.0, 0.0),
-                                        child: FFButtonWidget(
-                                          onPressed: () {
-                                            print('Button pressed ...');
-                                          },
-                                          text: 'DAFTAR SEKARANG',
-                                          options: FFButtonOptions(
-                                            width: double.infinity,
-                                            height: 30.0,
+                                        alignment:
+                                            const AlignmentDirectional(0.0, 1.0),
+                                        child: Align(
+                                          alignment:
+                                              const AlignmentDirectional(-1.0, 0.0),
+                                          child: Padding(
                                             padding:
                                                 const EdgeInsetsDirectional.fromSTEB(
-                                                    24.0, 0.0, 24.0, 0.0),
-                                            iconPadding:
-                                                const EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 0.0, 0.0),
-                                            color: FlutterFlowTheme.of(context)
-                                                .tertiary,
-                                            textStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .titleSmall
-                                                    .override(
-                                                      fontFamily: 'Readex Pro',
-                                                      color: Colors.white,
-                                                      letterSpacing: 0.0,
+                                                    16.0, 0.0, 16.0, 0.0),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          0.0, 0.0, 0.0, 8.0),
+                                                  child: Text(
+                                                    'Punya Event ?',
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodyMedium
+                                                        .override(
+                                                          fontFamily: 'Poppins',
+                                                          letterSpacing: 0.0,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'Daftar Sekarang dan Rasakan Keuntungan',
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodyMedium
+                                                      .override(
+                                                        fontFamily: 'Poppins',
+                                                        fontSize: 10.0,
+                                                        letterSpacing: 0.0,
+                                                      ),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          0.0, 0.0, 0.0, 10.0),
+                                                  child: Text(
+                                                    'Menjadi Bagian dari Kami',
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodyMedium
+                                                        .override(
+                                                          fontFamily: 'Poppins',
+                                                          fontSize: 10.0,
+                                                          letterSpacing: 0.0,
+                                                        ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          0.0, 10.0, 0.0, 0.0),
+                                                  child: FFButtonWidget(
+                                                    onPressed: () async {
+                                                      context.pushNamed(
+                                                          'registrasiOrganizer');
+                                                    },
+                                                    text: 'DAFTAR SEKARANG',
+                                                    options: FFButtonOptions(
+                                                      width: double.infinity,
+                                                      height: 30.0,
+                                                      padding:
+                                                          const EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  24.0,
+                                                                  0.0,
+                                                                  24.0,
+                                                                  0.0),
+                                                      iconPadding:
+                                                          const EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  0.0,
+                                                                  0.0,
+                                                                  0.0,
+                                                                  0.0),
+                                                      color: const Color(0xFFB0830F),
+                                                      textStyle:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .titleSmall
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Readex Pro',
+                                                                color: Colors
+                                                                    .white,
+                                                                letterSpacing:
+                                                                    0.0,
+                                                              ),
+                                                      elevation: 3.0,
+                                                      borderSide: const BorderSide(
+                                                        color:
+                                                            Colors.transparent,
+                                                        width: 1.0,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
                                                     ),
-                                            elevation: 3.0,
-                                            borderSide: const BorderSide(
-                                              color: Colors.transparent,
-                                              width: 1.0,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
                                           ),
                                         ),
                                       ),
-                                    ],
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ],
                     ),

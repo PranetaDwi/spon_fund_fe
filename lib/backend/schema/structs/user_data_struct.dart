@@ -12,42 +12,66 @@ class UserDataStruct extends BaseStruct {
     String? provinceID,
     int? userID,
     String? role,
+    String? provinceIDCreate,
+    String? provinceNameCreate,
   })  : _token = token,
         _userName = userName,
         _provinceID = provinceID,
         _userID = userID,
-        _role = role;
+        _role = role,
+        _provinceIDCreate = provinceIDCreate,
+        _provinceNameCreate = provinceNameCreate;
 
   // "token" field.
   String? _token;
   String get token => _token ?? '';
   set token(String? val) => _token = val;
+
   bool hasToken() => _token != null;
 
   // "userName" field.
   String? _userName;
   String get userName => _userName ?? '';
   set userName(String? val) => _userName = val;
+
   bool hasUserName() => _userName != null;
 
   // "provinceID" field.
   String? _provinceID;
   String get provinceID => _provinceID ?? '';
   set provinceID(String? val) => _provinceID = val;
+
   bool hasProvinceID() => _provinceID != null;
 
   // "userID" field.
   int? _userID;
   int get userID => _userID ?? 0;
   set userID(int? val) => _userID = val;
-  void incrementUserID(int amount) => _userID = userID + amount;
+
+  void incrementUserID(int amount) => userID = userID + amount;
+
   bool hasUserID() => _userID != null;
 
   // "role" field.
   String? _role;
   String get role => _role ?? '';
   set role(String? val) => _role = val;
+
   bool hasRole() => _role != null;
+
+  // "provinceIDCreate" field.
+  String? _provinceIDCreate;
+  String get provinceIDCreate => _provinceIDCreate ?? '11';
+  set provinceIDCreate(String? val) => _provinceIDCreate = val;
+
+  bool hasProvinceIDCreate() => _provinceIDCreate != null;
+
+  // "provinceNameCreate" field.
+  String? _provinceNameCreate;
+  String get provinceNameCreate => _provinceNameCreate ?? '';
+  set provinceNameCreate(String? val) => _provinceNameCreate = val;
+
+  bool hasProvinceNameCreate() => _provinceNameCreate != null;
 
   static UserDataStruct fromMap(Map<String, dynamic> data) => UserDataStruct(
         token: data['token'] as String?,
@@ -55,6 +79,8 @@ class UserDataStruct extends BaseStruct {
         provinceID: data['provinceID'] as String?,
         userID: castToType<int>(data['userID']),
         role: data['role'] as String?,
+        provinceIDCreate: data['provinceIDCreate'] as String?,
+        provinceNameCreate: data['provinceNameCreate'] as String?,
       );
 
   static UserDataStruct? maybeFromMap(dynamic data) =>
@@ -66,6 +92,8 @@ class UserDataStruct extends BaseStruct {
         'provinceID': _provinceID,
         'userID': _userID,
         'role': _role,
+        'provinceIDCreate': _provinceIDCreate,
+        'provinceNameCreate': _provinceNameCreate,
       }.withoutNulls;
 
   @override
@@ -88,6 +116,14 @@ class UserDataStruct extends BaseStruct {
         ),
         'role': serializeParam(
           _role,
+          ParamType.String,
+        ),
+        'provinceIDCreate': serializeParam(
+          _provinceIDCreate,
+          ParamType.String,
+        ),
+        'provinceNameCreate': serializeParam(
+          _provinceNameCreate,
           ParamType.String,
         ),
       }.withoutNulls;
@@ -119,6 +155,16 @@ class UserDataStruct extends BaseStruct {
           ParamType.String,
           false,
         ),
+        provinceIDCreate: deserializeParam(
+          data['provinceIDCreate'],
+          ParamType.String,
+          false,
+        ),
+        provinceNameCreate: deserializeParam(
+          data['provinceNameCreate'],
+          ParamType.String,
+          false,
+        ),
       );
 
   @override
@@ -131,12 +177,21 @@ class UserDataStruct extends BaseStruct {
         userName == other.userName &&
         provinceID == other.provinceID &&
         userID == other.userID &&
-        role == other.role;
+        role == other.role &&
+        provinceIDCreate == other.provinceIDCreate &&
+        provinceNameCreate == other.provinceNameCreate;
   }
 
   @override
-  int get hashCode =>
-      const ListEquality().hash([token, userName, provinceID, userID, role]);
+  int get hashCode => const ListEquality().hash([
+        token,
+        userName,
+        provinceID,
+        userID,
+        role,
+        provinceIDCreate,
+        provinceNameCreate
+      ]);
 }
 
 UserDataStruct createUserDataStruct({
@@ -145,6 +200,8 @@ UserDataStruct createUserDataStruct({
   String? provinceID,
   int? userID,
   String? role,
+  String? provinceIDCreate,
+  String? provinceNameCreate,
 }) =>
     UserDataStruct(
       token: token,
@@ -152,4 +209,6 @@ UserDataStruct createUserDataStruct({
       provinceID: provinceID,
       userID: userID,
       role: role,
+      provinceIDCreate: provinceIDCreate,
+      provinceNameCreate: provinceNameCreate,
     );

@@ -1,5 +1,4 @@
 import '/backend/api_requests/api_calls.dart';
-import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -129,7 +128,7 @@ class _RegistrasiEntrepreneurWidgetState
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 60.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 60.0, 0.0, 80.0),
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
@@ -362,7 +361,7 @@ class _RegistrasiEntrepreneurWidgetState
                               controller: _model.passwordTextController,
                               focusNode: _model.passwordFocusNode,
                               autofocus: true,
-                              obscureText: false,
+                              obscureText: !_model.passwordVisibility,
                               decoration: InputDecoration(
                                 labelStyle: FlutterFlowTheme.of(context)
                                     .labelMedium
@@ -408,6 +407,19 @@ class _RegistrasiEntrepreneurWidgetState
                                   ),
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
+                                suffixIcon: InkWell(
+                                  onTap: () => setState(
+                                    () => _model.passwordVisibility =
+                                        !_model.passwordVisibility,
+                                  ),
+                                  focusNode: FocusNode(skipTraversal: true),
+                                  child: Icon(
+                                    _model.passwordVisibility
+                                        ? Icons.visibility_outlined
+                                        : Icons.visibility_off_outlined,
+                                    size: 20.0,
+                                  ),
+                                ),
                               ),
                               style: FlutterFlowTheme.of(context)
                                   .bodyMedium
@@ -421,13 +433,15 @@ class _RegistrasiEntrepreneurWidgetState
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(16.0),
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                16.0, 16.0, 16.0, 54.0),
                             child: TextFormField(
                               controller:
                                   _model.passwordConfirmationTextController,
                               focusNode: _model.passwordConfirmationFocusNode,
                               autofocus: true,
-                              obscureText: false,
+                              obscureText:
+                                  !_model.passwordConfirmationVisibility,
                               decoration: InputDecoration(
                                 labelStyle: FlutterFlowTheme.of(context)
                                     .labelMedium
@@ -473,6 +487,20 @@ class _RegistrasiEntrepreneurWidgetState
                                   ),
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
+                                suffixIcon: InkWell(
+                                  onTap: () => setState(
+                                    () => _model
+                                            .passwordConfirmationVisibility =
+                                        !_model.passwordConfirmationVisibility,
+                                  ),
+                                  focusNode: FocusNode(skipTraversal: true),
+                                  child: Icon(
+                                    _model.passwordConfirmationVisibility
+                                        ? Icons.visibility_outlined
+                                        : Icons.visibility_off_outlined,
+                                    size: 20.0,
+                                  ),
+                                ),
                               ),
                               style: FlutterFlowTheme.of(context)
                                   .bodyMedium
@@ -510,26 +538,30 @@ class _RegistrasiEntrepreneurWidgetState
                           passwordConfirmation:
                               _model.passwordConfirmationTextController.text,
                         );
-                        if ((_model.apiResultr2c?.succeeded ?? true)) {
-                          setState(() {
-                            FFAppState().userDataState = UserDataStruct(
-                              userID: AuthenticationGroup
-                                  .registerEntreprenuerCall
-                                  .userEntrepreneurID(
-                                (_model.apiResultr2c?.jsonBody ?? ''),
-                              ),
-                            );
-                          });
 
-                          context.pushNamed('registrasiTambahMitra');
+                        if ((_model.apiResultr2c?.succeeded ?? true)) {
+                          context.pushNamed(
+                            'registrasiTambahMitra',
+                            queryParameters: {
+                              'userRegistrationId': serializeParam(
+                                AuthenticationGroup.registerEntreprenuerCall
+                                    .userEntrepreneurID(
+                                  (_model.apiResultr2c?.jsonBody ?? ''),
+                                ),
+                                ParamType.int,
+                              ),
+                            }.withoutNulls,
+                          );
                         } else {
                           await showDialog(
                             context: context,
                             builder: (alertDialogContext) {
                               return AlertDialog(
                                 title: const Text('Error'),
-                                content:
-                                    const Text('Terjadi Kesalahan Saat Input Data'),
+                                content: Text(getJsonField(
+                                  (_model.apiResultr2c?.jsonBody ?? ''),
+                                  r'''$.data''',
+                                ).toString()),
                                 actions: [
                                   TextButton(
                                     onPressed: () =>
@@ -552,7 +584,7 @@ class _RegistrasiEntrepreneurWidgetState
                             24.0, 0.0, 24.0, 0.0),
                         iconPadding:
                             const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                        color: FlutterFlowTheme.of(context).success,
+                        color: const Color(0xFF1B3E3B),
                         textStyle:
                             FlutterFlowTheme.of(context).titleSmall.override(
                                   fontFamily: 'Poppins',

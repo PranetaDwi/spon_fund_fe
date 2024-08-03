@@ -1,5 +1,5 @@
+import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/form_field_controller.dart';
 import 'registrasi_tambah_mitra_widget.dart' show RegistrasiTambahMitraWidget;
 import 'package:flutter/material.dart';
 
@@ -9,11 +9,13 @@ class RegistrasiTambahMitraModel
 
   final unfocusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
-  // State field(s) for MitraName widget.
-  FocusNode? mitraNameFocusNode;
-  TextEditingController? mitraNameTextController;
-  String? Function(BuildContext, String?)? mitraNameTextControllerValidator;
-  String? _mitraNameTextControllerValidator(BuildContext context, String? val) {
+  // State field(s) for organisasiName widget.
+  FocusNode? organisasiNameFocusNode;
+  TextEditingController? organisasiNameTextController;
+  String? Function(BuildContext, String?)?
+      organisasiNameTextControllerValidator;
+  String? _organisasiNameTextControllerValidator(
+      BuildContext context, String? val) {
     if (val == null || val.isEmpty) {
       return 'Field is required';
     }
@@ -21,42 +23,50 @@ class RegistrasiTambahMitraModel
     return null;
   }
 
-  // State field(s) for ProvinceDropdown widget.
-  String? provinceDropdownValue;
-  FormFieldController<String>? provinceDropdownValueController;
-  // State field(s) for CityDropdown widget.
-  String? cityDropdownValue;
-  FormFieldController<String>? cityDropdownValueController;
-  // State field(s) for MitraAddress widget.
-  FocusNode? mitraAddressFocusNode;
-  TextEditingController? mitraAddressTextController;
-  String? Function(BuildContext, String?)? mitraAddressTextControllerValidator;
-  // State field(s) for TextField widget.
-  FocusNode? textFieldFocusNode;
-  TextEditingController? textController3;
-  String? Function(BuildContext, String?)? textController3Validator;
+  // State field(s) for Province widget.
+  FocusNode? provinceFocusNode;
+  TextEditingController? provinceTextController;
+  String? Function(BuildContext, String?)? provinceTextControllerValidator;
+  // State field(s) for City widget.
+  FocusNode? cityFocusNode;
+  TextEditingController? cityTextController;
+  String? Function(BuildContext, String?)? cityTextControllerValidator;
+  // State field(s) for Address widget.
+  FocusNode? addressFocusNode;
+  TextEditingController? addressTextController;
+  String? Function(BuildContext, String?)? addressTextControllerValidator;
+  bool isDataUploading = false;
+  FFUploadedFile uploadedLocalFile =
+      FFUploadedFile(bytes: Uint8List.fromList([]));
+
   // State field(s) for MitraDescription widget.
   FocusNode? mitraDescriptionFocusNode;
   TextEditingController? mitraDescriptionTextController;
   String? Function(BuildContext, String?)?
       mitraDescriptionTextControllerValidator;
+  // Stores action output result for [Backend Call - API (Post Mitra)] action in SubmitButton widget.
+  ApiCallResponse? apiResultby0;
 
   @override
   void initState(BuildContext context) {
-    mitraNameTextControllerValidator = _mitraNameTextControllerValidator;
+    organisasiNameTextControllerValidator =
+        _organisasiNameTextControllerValidator;
   }
 
   @override
   void dispose() {
     unfocusNode.dispose();
-    mitraNameFocusNode?.dispose();
-    mitraNameTextController?.dispose();
+    organisasiNameFocusNode?.dispose();
+    organisasiNameTextController?.dispose();
 
-    mitraAddressFocusNode?.dispose();
-    mitraAddressTextController?.dispose();
+    provinceFocusNode?.dispose();
+    provinceTextController?.dispose();
 
-    textFieldFocusNode?.dispose();
-    textController3?.dispose();
+    cityFocusNode?.dispose();
+    cityTextController?.dispose();
+
+    addressFocusNode?.dispose();
+    addressTextController?.dispose();
 
     mitraDescriptionFocusNode?.dispose();
     mitraDescriptionTextController?.dispose();

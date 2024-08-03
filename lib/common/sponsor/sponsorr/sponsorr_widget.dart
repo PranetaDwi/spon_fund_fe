@@ -42,6 +42,8 @@ class _SponsorrWidgetState extends State<SponsorrWidget> {
       height: double.infinity,
       decoration: BoxDecoration(
         color: FlutterFlowTheme.of(context).secondaryBackground,
+        borderRadius: BorderRadius.circular(16.0),
+        shape: BoxShape.rectangle,
       ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -72,7 +74,7 @@ class _SponsorrWidgetState extends State<SponsorrWidget> {
                         scrollDirection: Axis.horizontal,
                         children: [
                           ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
+                            borderRadius: BorderRadius.circular(0.0),
                             child: Image.network(
                               'https://picsum.photos/seed/13/600',
                               width: 300.0,

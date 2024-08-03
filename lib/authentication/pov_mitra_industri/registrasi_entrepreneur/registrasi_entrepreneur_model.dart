@@ -48,6 +48,7 @@ class RegistrasiEntrepreneurModel
   // State field(s) for Password widget.
   FocusNode? passwordFocusNode;
   TextEditingController? passwordTextController;
+  late bool passwordVisibility;
   String? Function(BuildContext, String?)? passwordTextControllerValidator;
   String? _passwordTextControllerValidator(BuildContext context, String? val) {
     if (val == null || val.isEmpty) {
@@ -60,6 +61,7 @@ class RegistrasiEntrepreneurModel
   // State field(s) for PasswordConfirmation widget.
   FocusNode? passwordConfirmationFocusNode;
   TextEditingController? passwordConfirmationTextController;
+  late bool passwordConfirmationVisibility;
   String? Function(BuildContext, String?)?
       passwordConfirmationTextControllerValidator;
   String? _passwordConfirmationTextControllerValidator(
@@ -79,7 +81,9 @@ class RegistrasiEntrepreneurModel
     fullNameTextControllerValidator = _fullNameTextControllerValidator;
     phoneTextControllerValidator = _phoneTextControllerValidator;
     emailTextControllerValidator = _emailTextControllerValidator;
+    passwordVisibility = false;
     passwordTextControllerValidator = _passwordTextControllerValidator;
+    passwordConfirmationVisibility = false;
     passwordConfirmationTextControllerValidator =
         _passwordConfirmationTextControllerValidator;
   }

@@ -1,17 +1,19 @@
 import '/backend/api_requests/api_calls.dart';
-import '/backend/schema/structs/index.dart';
-import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/flutter_flow/form_field_controller.dart';
+import '/flutter_flow/upload_data.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'registrasi_tambah_mitra_model.dart';
 export 'registrasi_tambah_mitra_model.dart';
 
 class RegistrasiTambahMitraWidget extends StatefulWidget {
-  const RegistrasiTambahMitraWidget({super.key});
+  const RegistrasiTambahMitraWidget({
+    super.key,
+    required this.userRegistrationId,
+  });
+
+  final int? userRegistrationId;
 
   @override
   State<RegistrasiTambahMitraWidget> createState() =>
@@ -29,14 +31,17 @@ class _RegistrasiTambahMitraWidgetState
     super.initState();
     _model = createModel(context, () => RegistrasiTambahMitraModel());
 
-    _model.mitraNameTextController ??= TextEditingController();
-    _model.mitraNameFocusNode ??= FocusNode();
+    _model.organisasiNameTextController ??= TextEditingController();
+    _model.organisasiNameFocusNode ??= FocusNode();
 
-    _model.mitraAddressTextController ??= TextEditingController();
-    _model.mitraAddressFocusNode ??= FocusNode();
+    _model.provinceTextController ??= TextEditingController();
+    _model.provinceFocusNode ??= FocusNode();
 
-    _model.textController3 ??= TextEditingController();
-    _model.textFieldFocusNode ??= FocusNode();
+    _model.cityTextController ??= TextEditingController();
+    _model.cityFocusNode ??= FocusNode();
+
+    _model.addressTextController ??= TextEditingController();
+    _model.addressFocusNode ??= FocusNode();
 
     _model.mitraDescriptionTextController ??= TextEditingController();
     _model.mitraDescriptionFocusNode ??= FocusNode();
@@ -51,8 +56,6 @@ class _RegistrasiTambahMitraWidgetState
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return GestureDetector(
       onTap: () => _model.unfocusNode.canRequestFocus
           ? FocusScope.of(context).requestFocus(_model.unfocusNode)
@@ -64,7 +67,7 @@ class _RegistrasiTambahMitraWidgetState
           backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
           automaticallyImplyLeading: false,
           title: Text(
-            'Tambah Mitra Industri',
+            'Tambah Mitra',
             style: FlutterFlowTheme.of(context).headlineMedium.override(
                   fontFamily: 'Poppins',
                   color: FlutterFlowTheme.of(context).primaryText,
@@ -140,7 +143,7 @@ class _RegistrasiTambahMitraWidgetState
                           Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: Text(
-                              'Data Mitra',
+                              'Data Organisasi',
                               textAlign: TextAlign.start,
                               style: FlutterFlowTheme.of(context)
                                   .bodyMedium
@@ -154,14 +157,14 @@ class _RegistrasiTambahMitraWidgetState
                           ),
                           Padding(
                             padding: const EdgeInsetsDirectional.fromSTEB(
-                                16.0, 16.0, 16.0, 0.0),
+                                16.0, 10.0, 16.0, 5.0),
                             child: TextFormField(
-                              controller: _model.mitraNameTextController,
-                              focusNode: _model.mitraNameFocusNode,
+                              controller: _model.organisasiNameTextController,
+                              focusNode: _model.organisasiNameFocusNode,
                               autofocus: true,
                               obscureText: false,
                               decoration: InputDecoration(
-                                labelText: 'Nama Mitra Industri',
+                                labelText: 'Nama Organisasi',
                                 labelStyle: FlutterFlowTheme.of(context)
                                     .labelMedium
                                     .override(
@@ -169,7 +172,7 @@ class _RegistrasiTambahMitraWidgetState
                                       fontSize: 18.0,
                                       letterSpacing: 0.0,
                                     ),
-                                hintText: 'Masukkan nama Mitra Industri',
+                                hintText: 'Masukkan nama organisasi',
                                 hintStyle: FlutterFlowTheme.of(context)
                                     .labelMedium
                                     .override(
@@ -217,172 +220,21 @@ class _RegistrasiTambahMitraWidgetState
                                     fontSize: 16.0,
                                     letterSpacing: 0.0,
                                   ),
-                              validator: _model.mitraNameTextControllerValidator
+                              validator: _model
+                                  .organisasiNameTextControllerValidator
                                   .asValidator(context),
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsetsDirectional.fromSTEB(
-                                16.0, 16.0, 16.0, 0.0),
-                            child: FutureBuilder<ApiCallResponse>(
-                              future:
-                                  GetAPIProvinceGroup.getProvinceCall.call(),
-                              builder: (context, snapshot) {
-                                // Customize what your widget looks like when it's loading.
-                                if (!snapshot.hasData) {
-                                  return Center(
-                                    child: SizedBox(
-                                      width: 50.0,
-                                      height: 50.0,
-                                      child: CircularProgressIndicator(
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                          FlutterFlowTheme.of(context).primary,
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                }
-                                final provinceDropdownGetProvinceResponse =
-                                    snapshot.data!;
-                                return FlutterFlowDropDown<String>(
-                                  controller:
-                                      _model.provinceDropdownValueController ??=
-                                          FormFieldController<String>(null),
-                                  options: const <String>[],
-                                  onChanged: (val) async {
-                                    setState(() =>
-                                        _model.provinceDropdownValue = val);
-                                    setState(() {
-                                      FFAppState().userDataState =
-                                          UserDataStruct(
-                                        provinceID:
-                                            _model.provinceDropdownValue,
-                                      );
-                                    });
-                                  },
-                                  width: double.infinity,
-                                  height: 56.0,
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        fontSize: 16.0,
-                                        letterSpacing: 0.0,
-                                      ),
-                                  hintText: 'Masukkan Provinsi',
-                                  icon: Icon(
-                                    Icons.keyboard_arrow_down_rounded,
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryText,
-                                    size: 24.0,
-                                  ),
-                                  fillColor: FlutterFlowTheme.of(context)
-                                      .primaryBackground,
-                                  elevation: 2.0,
-                                  borderColor: FlutterFlowTheme.of(context)
-                                      .secondaryText,
-                                  borderWidth: 2.0,
-                                  borderRadius: 8.0,
-                                  margin: const EdgeInsetsDirectional.fromSTEB(
-                                      16.0, 4.0, 16.0, 4.0),
-                                  hidesUnderline: true,
-                                  isOverButton: false,
-                                  isSearchable: false,
-                                  isMultiSelect: false,
-                                  labelText: 'Provinsi',
-                                  labelTextStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .override(
-                                        fontFamily: 'Readex Pro',
-                                        letterSpacing: 0.0,
-                                      ),
-                                );
-                              },
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                16.0, 16.0, 16.0, 10.0),
-                            child: FutureBuilder<ApiCallResponse>(
-                              future: GetAPIProvinceGroup.getCityCall.call(
-                                provinceID:
-                                    FFAppState().userDataState.provinceID,
-                              ),
-                              builder: (context, snapshot) {
-                                // Customize what your widget looks like when it's loading.
-                                if (!snapshot.hasData) {
-                                  return Center(
-                                    child: SizedBox(
-                                      width: 50.0,
-                                      height: 50.0,
-                                      child: CircularProgressIndicator(
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                          FlutterFlowTheme.of(context).primary,
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                }
-                                final cityDropdownGetCityResponse =
-                                    snapshot.data!;
-                                return FlutterFlowDropDown<String>(
-                                  controller:
-                                      _model.cityDropdownValueController ??=
-                                          FormFieldController<String>(null),
-                                  options: const ['Option 1', 'Option 2', 'Option 3'],
-                                  onChanged: (val) => setState(
-                                      () => _model.cityDropdownValue = val),
-                                  width: double.infinity,
-                                  height: 56.0,
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        fontSize: 16.0,
-                                        letterSpacing: 0.0,
-                                      ),
-                                  hintText: 'Masukkan Kota',
-                                  icon: Icon(
-                                    Icons.keyboard_arrow_down_rounded,
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryText,
-                                    size: 24.0,
-                                  ),
-                                  fillColor: FlutterFlowTheme.of(context)
-                                      .primaryBackground,
-                                  elevation: 2.0,
-                                  borderColor: FlutterFlowTheme.of(context)
-                                      .secondaryText,
-                                  borderWidth: 2.0,
-                                  borderRadius: 8.0,
-                                  margin: const EdgeInsetsDirectional.fromSTEB(
-                                      16.0, 4.0, 16.0, 4.0),
-                                  hidesUnderline: true,
-                                  isOverButton: false,
-                                  isSearchable: false,
-                                  isMultiSelect: false,
-                                  labelText: 'Provinsi',
-                                  labelTextStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .override(
-                                        fontFamily: 'Readex Pro',
-                                        letterSpacing: 0.0,
-                                      ),
-                                );
-                              },
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(16.0),
+                                16.0, 10.0, 16.0, 5.0),
                             child: TextFormField(
-                              controller: _model.mitraAddressTextController,
-                              focusNode: _model.mitraAddressFocusNode,
+                              controller: _model.provinceTextController,
+                              focusNode: _model.provinceFocusNode,
                               autofocus: true,
                               obscureText: false,
                               decoration: InputDecoration(
-                                labelText: 'Alamat Mitra Industri',
+                                labelText: 'Provinsi',
                                 labelStyle: FlutterFlowTheme.of(context)
                                     .labelMedium
                                     .override(
@@ -390,7 +242,7 @@ class _RegistrasiTambahMitraWidgetState
                                       fontSize: 18.0,
                                       letterSpacing: 0.0,
                                     ),
-                                hintText: 'Alamat lengkap mitra',
+                                hintText: 'Masukkan provinsi',
                                 hintStyle: FlutterFlowTheme.of(context)
                                     .labelMedium
                                     .override(
@@ -428,7 +280,7 @@ class _RegistrasiTambahMitraWidgetState
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
                                 prefixIcon: const Icon(
-                                  Icons.location_on,
+                                  Icons.castle,
                                 ),
                               ),
                               style: FlutterFlowTheme.of(context)
@@ -438,98 +290,322 @@ class _RegistrasiTambahMitraWidgetState
                                     fontSize: 16.0,
                                     letterSpacing: 0.0,
                                   ),
-                              validator: _model
-                                  .mitraAddressTextControllerValidator
+                              validator: _model.provinceTextControllerValidator
                                   .asValidator(context),
                             ),
                           ),
-                          Align(
-                            alignment: const AlignmentDirectional(0.0, 0.0),
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 10.0, 0.0, 0.0),
-                              child: DragTarget<String>(
-                                builder: (context, _, __) {
-                                  return Padding(
+                          Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                16.0, 10.0, 16.0, 5.0),
+                            child: TextFormField(
+                              controller: _model.cityTextController,
+                              focusNode: _model.cityFocusNode,
+                              autofocus: true,
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                labelText: 'Kota',
+                                labelStyle: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 18.0,
+                                      letterSpacing: 0.0,
+                                    ),
+                                hintText: 'Masukkan kota',
+                                hintStyle: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 16.0,
+                                      letterSpacing: 0.0,
+                                    ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryText,
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: FlutterFlowTheme.of(context).primary,
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: FlutterFlowTheme.of(context).error,
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: FlutterFlowTheme.of(context).error,
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                prefixIcon: const Icon(
+                                  Icons.location_city_sharp,
+                                ),
+                              ),
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    fontSize: 16.0,
+                                    letterSpacing: 0.0,
+                                  ),
+                              validator: _model.cityTextControllerValidator
+                                  .asValidator(context),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                16.0, 10.0, 16.0, 5.0),
+                            child: TextFormField(
+                              controller: _model.addressTextController,
+                              focusNode: _model.addressFocusNode,
+                              autofocus: true,
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                labelText: 'Alamat Lengkap',
+                                labelStyle: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 18.0,
+                                      letterSpacing: 0.0,
+                                    ),
+                                hintText: 'Masukkan alamat lengkap',
+                                hintStyle: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 16.0,
+                                      letterSpacing: 0.0,
+                                    ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryText,
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: FlutterFlowTheme.of(context).primary,
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: FlutterFlowTheme.of(context).error,
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: FlutterFlowTheme.of(context).error,
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                prefixIcon: const Icon(
+                                  Icons.add_business,
+                                ),
+                              ),
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    fontSize: 16.0,
+                                    letterSpacing: 0.0,
+                                  ),
+                              validator: _model.addressTextControllerValidator
+                                  .asValidator(context),
+                            ),
+                          ),
+                          Stack(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    16.0, 15.0, 16.0, 0.0),
+                                child: Container(
+                                  width: 500.0,
+                                  height: 70.0,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    border: Border.all(
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryText,
+                                    ),
+                                  ),
+                                  child: Padding(
                                     padding: const EdgeInsetsDirectional.fromSTEB(
-                                        16.0, 0.0, 16.0, 8.0),
-                                    child: TextFormField(
-                                      controller: _model.textController3,
-                                      focusNode: _model.textFieldFocusNode,
-                                      autofocus: true,
-                                      obscureText: false,
-                                      decoration: InputDecoration(
-                                        labelText: 'Gambar Mitra Industri',
-                                        labelStyle: FlutterFlowTheme.of(context)
-                                            .labelMedium
-                                            .override(
-                                              fontFamily: 'Readex Pro',
-                                              fontSize: 18.0,
-                                              letterSpacing: 0.0,
+                                        10.0, 5.0, 10.0, 5.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsetsDirectional.fromSTEB(
+                                                  0.0, 8.0, 0.0, 0.0),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                            child: Image.memory(
+                                              _model.uploadedLocalFile.bytes ??
+                                                  Uint8List.fromList([]),
+                                              width: 60.0,
+                                              height: 60.0,
+                                              fit: BoxFit.cover,
+                                              errorBuilder: (context, error,
+                                                      stackTrace) =>
+                                                  Image.asset(
+                                                'assets/images/error_image.png',
+                                                width: 60.0,
+                                                height: 60.0,
+                                                fit: BoxFit.cover,
+                                              ),
                                             ),
-                                        hintText:
-                                            'Masukkan gambar Mitra Industri',
-                                        hintStyle: FlutterFlowTheme.of(context)
-                                            .labelMedium
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              const AlignmentDirectional(1.0, 0.0),
+                                          child: FFButtonWidget(
+                                            onPressed: () async {
+                                              final selectedMedia =
+                                                  await selectMedia(
+                                                mediaSource:
+                                                    MediaSource.photoGallery,
+                                                multiImage: false,
+                                              );
+                                              if (selectedMedia != null &&
+                                                  selectedMedia.every((m) =>
+                                                      validateFileFormat(
+                                                          m.storagePath,
+                                                          context))) {
+                                                setState(() => _model
+                                                    .isDataUploading = true);
+                                                var selectedUploadedFiles =
+                                                    <FFUploadedFile>[];
+
+                                                try {
+                                                  selectedUploadedFiles =
+                                                      selectedMedia
+                                                          .map((m) =>
+                                                              FFUploadedFile(
+                                                                name: m
+                                                                    .storagePath
+                                                                    .split('/')
+                                                                    .last,
+                                                                bytes: m.bytes,
+                                                                height: m
+                                                                    .dimensions
+                                                                    ?.height,
+                                                                width: m
+                                                                    .dimensions
+                                                                    ?.width,
+                                                                blurHash:
+                                                                    m.blurHash,
+                                                              ))
+                                                          .toList();
+                                                } finally {
+                                                  _model.isDataUploading =
+                                                      false;
+                                                }
+                                                if (selectedUploadedFiles
+                                                        .length ==
+                                                    selectedMedia.length) {
+                                                  setState(() {
+                                                    _model.uploadedLocalFile =
+                                                        selectedUploadedFiles
+                                                            .first;
+                                                  });
+                                                } else {
+                                                  setState(() {});
+                                                  return;
+                                                }
+                                              }
+                                            },
+                                            text: 'Unggah',
+                                            options: FFButtonOptions(
+                                              height: 40.0,
+                                              padding: const EdgeInsetsDirectional
+                                                  .fromSTEB(
+                                                      24.0, 0.0, 24.0, 0.0),
+                                              iconPadding: const EdgeInsetsDirectional
+                                                  .fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                              color: const Color(0xFF96A6A5),
+                                              textStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .titleSmall
+                                                      .override(
+                                                        fontFamily: 'Poppins',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryText,
+                                                        fontSize: 14.0,
+                                                        letterSpacing: 0.0,
+                                                      ),
+                                              elevation: 3.0,
+                                              borderSide: const BorderSide(
+                                                color: Colors.transparent,
+                                                width: 1.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Align(
+                                alignment: const AlignmentDirectional(-1.0, -1.0),
+                                child: Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      25.0, 0.0, 0.0, 0.0),
+                                  child: Container(
+                                    width: 138.0,
+                                    height: 30.0,
+                                    decoration: BoxDecoration(
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryBackground,
+                                    ),
+                                    child: Align(
+                                      alignment: const AlignmentDirectional(0.0, 0.0),
+                                      child: Text(
+                                        'Logo Organisasi',
+                                        style: FlutterFlowTheme.of(context)
+                                            .displayMedium
                                             .override(
                                               fontFamily: 'Poppins',
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryText,
                                               fontSize: 16.0,
                                               letterSpacing: 0.0,
                                             ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: FlutterFlowTheme.of(context)
-                                                .secondaryText,
-                                            width: 2.0,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: FlutterFlowTheme.of(context)
-                                                .primary,
-                                            width: 2.0,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                        ),
-                                        errorBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: FlutterFlowTheme.of(context)
-                                                .error,
-                                            width: 2.0,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                        ),
-                                        focusedErrorBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: FlutterFlowTheme.of(context)
-                                                .error,
-                                            width: 2.0,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                        ),
-                                        suffixIcon: const Icon(
-                                          Icons.upload,
-                                        ),
                                       ),
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Readex Pro',
-                                            letterSpacing: 0.0,
-                                          ),
-                                      textAlign: TextAlign.start,
-                                      validator: _model.textController3Validator
-                                          .asValidator(context),
                                     ),
-                                  );
-                                },
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                           Padding(
                             padding: const EdgeInsetsDirectional.fromSTEB(
@@ -627,13 +703,12 @@ class _RegistrasiTambahMitraWidgetState
                                   24.0, 0.0, 24.0, 0.0),
                               iconPadding: const EdgeInsetsDirectional.fromSTEB(
                                   0.0, 0.0, 0.0, 0.0),
-                              color: FlutterFlowTheme.of(context).accent2,
+                              color: const Color(0xFF496562),
                               textStyle: FlutterFlowTheme.of(context)
                                   .titleSmall
                                   .override(
                                     fontFamily: 'Poppins',
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryText,
+                                    color: FlutterFlowTheme.of(context).info,
                                     letterSpacing: 0.0,
                                   ),
                               elevation: 0.0,
@@ -650,8 +725,62 @@ class _RegistrasiTambahMitraWidgetState
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: FFButtonWidget(
-                            onPressed: () {
-                              print('SubmitButton pressed ...');
+                            onPressed: () async {
+                              _model.apiResultby0 =
+                                  await AuthenticationGroup.postMitraCall.call(
+                                name: _model.organisasiNameTextController.text,
+                                description:
+                                    _model.mitraDescriptionTextController.text,
+                                address: _model.addressTextController.text,
+                                city: _model.cityTextController.text,
+                                province: _model.provinceTextController.text,
+                                photoFile: _model.uploadedLocalFile,
+                                userId: widget.userRegistrationId,
+                              );
+
+                              if ((_model.apiResultby0?.succeeded ?? true)) {
+                                await showDialog(
+                                  context: context,
+                                  builder: (alertDialogContext) {
+                                    return AlertDialog(
+                                      title: const Text('BERHASIL '),
+                                      content:
+                                          const Text('Berhasil menambahkan akun'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(alertDialogContext),
+                                          child: const Text('Ok'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+
+                                context.pushNamed('login');
+                              } else {
+                                await showDialog(
+                                  context: context,
+                                  builder: (alertDialogContext) {
+                                    return AlertDialog(
+                                      title: const Text('GAGAL MENAMBAHKAN AKUN'),
+                                      content: Text(getJsonField(
+                                        (_model.apiResultby0?.jsonBody ?? ''),
+                                        r'''$.data''',
+                                      ).toString()),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(alertDialogContext),
+                                          child: const Text('Ok'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              }
+
+                              setState(() {});
                             },
                             text: 'SIMPAN',
                             options: FFButtonOptions(
@@ -661,7 +790,7 @@ class _RegistrasiTambahMitraWidgetState
                                   24.0, 0.0, 24.0, 0.0),
                               iconPadding: const EdgeInsetsDirectional.fromSTEB(
                                   0.0, 0.0, 0.0, 0.0),
-                              color: FlutterFlowTheme.of(context).success,
+                              color: const Color(0xFF1B3E3B),
                               textStyle: FlutterFlowTheme.of(context)
                                   .titleSmall
                                   .override(

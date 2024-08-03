@@ -22,18 +22,6 @@ class _UbahDataProfileWidgetState extends State<UbahDataProfileWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => UbahDataProfileModel());
-
-    _model.fullNameTextController ??= TextEditingController(
-        text: FFAppState().ProfileManagementState.fullName);
-    _model.fullNameFocusNode ??= FocusNode();
-
-    _model.emailTextController ??=
-        TextEditingController(text: FFAppState().ProfileManagementState.email);
-    _model.emailFocusNode ??= FocusNode();
-
-    _model.phoneTextController ??=
-        TextEditingController(text: FFAppState().ProfileManagementState.phone);
-    _model.phoneFocusNode ??= FocusNode();
   }
 
   @override
@@ -85,8 +73,8 @@ class _UbahDataProfileWidgetState extends State<UbahDataProfileWidget> {
                           color: FlutterFlowTheme.of(context).primaryText,
                           size: 30.0,
                         ),
-                        onPressed: () {
-                          print('IconButton pressed ...');
+                        onPressed: () async {
+                          context.pushNamed('profil-fiks');
                         },
                       ),
                     ),
@@ -116,217 +104,252 @@ class _UbahDataProfileWidgetState extends State<UbahDataProfileWidget> {
                           size: 40.0,
                         ),
                         onPressed: () async {
-                          context.pushNamed('ubahNama');
+                          context.pushNamed('profil-fiks');
                         },
                       ),
                     ),
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
-                child: TextFormField(
-                  controller: _model.fullNameTextController,
-                  focusNode: _model.fullNameFocusNode,
-                  onFieldSubmitted: (_) async {
-                    context.pushNamed('ubahNama');
-                  },
-                  autofocus: true,
-                  textInputAction: TextInputAction.send,
-                  readOnly: true,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    labelText: 'Nama Lengkap',
-                    labelStyle:
-                        FlutterFlowTheme.of(context).labelMedium.override(
-                              fontFamily: 'Poppins',
-                              fontSize: 18.0,
-                              letterSpacing: 0.0,
-                            ),
-                    hintStyle:
-                        FlutterFlowTheme.of(context).labelMedium.override(
-                              fontFamily: 'Poppins',
-                              fontSize: 16.0,
-                              letterSpacing: 0.0,
-                            ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).primaryText,
-                        width: 1.0,
+              Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Container(
+                      width: double.infinity,
+                      height: 56.0,
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).primaryBackground,
+                        borderRadius: BorderRadius.circular(8.0),
+                        border: Border.all(
+                          color: FlutterFlowTheme.of(context).primaryText,
+                        ),
                       ),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).primary,
-                        width: 1.0,
+                      child: Align(
+                        alignment: const AlignmentDirectional(0.0, 0.0),
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              14.0, 0.0, 14.0, 0.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                FFAppState().ProfileManagementState.fullName,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 16.0,
+                                      letterSpacing: 0.0,
+                                    ),
+                              ),
+                              InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () async {
+                                  context.pushNamed('ubahNama');
+                                },
+                                child: Icon(
+                                  Icons.navigate_next,
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryText,
+                                  size: 40.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).error,
-                        width: 1.0,
-                      ),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).error,
-                        width: 1.0,
-                      ),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    suffixIcon: Icon(
-                      Icons.navigate_next,
-                      color: FlutterFlowTheme.of(context).primaryText,
-                      size: 30.0,
                     ),
                   ),
-                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                        fontFamily: 'Poppins',
-                        fontSize: 16.0,
-                        letterSpacing: 0.0,
+                  Align(
+                    alignment: const AlignmentDirectional(-0.81, 0.0),
+                    child: Container(
+                      width: 112.0,
+                      height: 37.0,
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).primaryBackground,
                       ),
-                  validator: _model.fullNameTextControllerValidator
-                      .asValidator(context),
-                ),
+                      child: Align(
+                        alignment: const AlignmentDirectional(0.0, 0.0),
+                        child: Text(
+                          'Nama Lengkap',
+                          style: FlutterFlowTheme.of(context)
+                              .bodyMedium
+                              .override(
+                                fontFamily: 'Poppins',
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryText,
+                                letterSpacing: 0.0,
+                              ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
-                child: TextFormField(
-                  controller: _model.emailTextController,
-                  focusNode: _model.emailFocusNode,
-                  onFieldSubmitted: (_) async {
-                    context.pushNamed('ubahEmail');
-                  },
-                  autofocus: true,
-                  readOnly: true,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    labelStyle:
-                        FlutterFlowTheme.of(context).labelMedium.override(
-                              fontFamily: 'Poppins',
-                              fontSize: 18.0,
-                              letterSpacing: 0.0,
-                            ),
-                    hintStyle:
-                        FlutterFlowTheme.of(context).labelMedium.override(
-                              fontFamily: 'Poppins',
-                              fontSize: 16.0,
-                              letterSpacing: 0.0,
-                            ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).primaryText,
-                        width: 1.0,
+              Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Container(
+                      width: double.infinity,
+                      height: 56.0,
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).primaryBackground,
+                        borderRadius: BorderRadius.circular(8.0),
+                        border: Border.all(
+                          color: FlutterFlowTheme.of(context).primaryText,
+                        ),
                       ),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).primary,
-                        width: 1.0,
+                      child: Align(
+                        alignment: const AlignmentDirectional(0.0, 0.0),
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              14.0, 0.0, 14.0, 0.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                FFAppState().ProfileManagementState.email,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 16.0,
+                                      letterSpacing: 0.0,
+                                    ),
+                              ),
+                              InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () async {
+                                  context.pushNamed('ubahEmail');
+                                },
+                                child: Icon(
+                                  Icons.navigate_next,
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryText,
+                                  size: 40.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).error,
-                        width: 1.0,
-                      ),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).error,
-                        width: 1.0,
-                      ),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    suffixIcon: Icon(
-                      Icons.navigate_next,
-                      color: FlutterFlowTheme.of(context).primaryText,
-                      size: 30.0,
                     ),
                   ),
-                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                        fontFamily: 'Poppins',
-                        fontSize: 16.0,
-                        letterSpacing: 0.0,
+                  Align(
+                    alignment: const AlignmentDirectional(-0.81, 0.0),
+                    child: Container(
+                      width: 62.0,
+                      height: 37.0,
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).primaryBackground,
                       ),
-                  validator:
-                      _model.emailTextControllerValidator.asValidator(context),
-                ),
+                      child: Align(
+                        alignment: const AlignmentDirectional(0.0, 0.0),
+                        child: Text(
+                          'Email',
+                          style: FlutterFlowTheme.of(context)
+                              .bodyMedium
+                              .override(
+                                fontFamily: 'Poppins',
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryText,
+                                letterSpacing: 0.0,
+                              ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
-                child: TextFormField(
-                  controller: _model.phoneTextController,
-                  focusNode: _model.phoneFocusNode,
-                  onFieldSubmitted: (_) async {
-                    context.pushNamed('ubahNomor');
-                  },
-                  autofocus: true,
-                  readOnly: true,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    labelText: 'Nomor Telephone',
-                    labelStyle:
-                        FlutterFlowTheme.of(context).labelMedium.override(
-                              fontFamily: 'Poppins',
-                              fontSize: 18.0,
-                              letterSpacing: 0.0,
-                            ),
-                    hintStyle:
-                        FlutterFlowTheme.of(context).labelMedium.override(
-                              fontFamily: 'Poppins',
-                              fontSize: 16.0,
-                              letterSpacing: 0.0,
-                            ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).primaryText,
-                        width: 1.0,
+              Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Container(
+                      width: double.infinity,
+                      height: 56.0,
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).primaryBackground,
+                        borderRadius: BorderRadius.circular(8.0),
+                        border: Border.all(
+                          color: FlutterFlowTheme.of(context).primaryText,
+                        ),
                       ),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).primary,
-                        width: 1.0,
+                      child: Align(
+                        alignment: const AlignmentDirectional(0.0, 0.0),
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              14.0, 0.0, 14.0, 0.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                FFAppState().ProfileManagementState.phone,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 16.0,
+                                      letterSpacing: 0.0,
+                                    ),
+                              ),
+                              InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () async {
+                                  context.pushNamed('ubahNomor');
+                                },
+                                child: Icon(
+                                  Icons.navigate_next,
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryText,
+                                  size: 40.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).error,
-                        width: 1.0,
-                      ),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).error,
-                        width: 1.0,
-                      ),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    suffixIcon: Icon(
-                      Icons.navigate_next,
-                      color: FlutterFlowTheme.of(context).primaryText,
-                      size: 30.0,
                     ),
                   ),
-                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                        fontFamily: 'Poppins',
-                        fontSize: 16.0,
-                        letterSpacing: 0.0,
+                  Align(
+                    alignment: const AlignmentDirectional(-0.81, 0.0),
+                    child: Container(
+                      width: 137.0,
+                      height: 37.0,
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).primaryBackground,
                       ),
-                  validator:
-                      _model.phoneTextControllerValidator.asValidator(context),
-                ),
+                      child: Align(
+                        alignment: const AlignmentDirectional(0.0, 0.0),
+                        child: Text(
+                          'Nomor Telephone',
+                          style: FlutterFlowTheme.of(context)
+                              .bodyMedium
+                              .override(
+                                fontFamily: 'Poppins',
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryText,
+                                letterSpacing: 0.0,
+                              ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

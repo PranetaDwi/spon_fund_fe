@@ -245,6 +245,7 @@ class _RegistrasiTambahOrganizerWidgetState
                                 }
                                 final provinceDropdownGetProvinceResponse =
                                     snapshot.data!;
+
                                 return FlutterFlowDropDown<String>(
                                   controller:
                                       _model.provinceDropdownValueController ??=
@@ -253,13 +254,10 @@ class _RegistrasiTambahOrganizerWidgetState
                                   onChanged: (val) async {
                                     setState(() =>
                                         _model.provinceDropdownValue = val);
-                                    setState(() {
-                                      FFAppState().userDataState =
-                                          UserDataStruct(
-                                        provinceID:
-                                            _model.provinceDropdownValue,
-                                      );
-                                    });
+                                    FFAppState().userDataState = UserDataStruct(
+                                      provinceID: _model.provinceDropdownValue,
+                                    );
+                                    setState(() {});
                                   },
                                   width: double.infinity,
                                   height: 56.0,
@@ -327,6 +325,7 @@ class _RegistrasiTambahOrganizerWidgetState
                                 }
                                 final cityDropdownGetCityResponse =
                                     snapshot.data!;
+
                                 return FlutterFlowDropDown<String>(
                                   controller:
                                       _model.cityDropdownValueController ??=
